@@ -1,0 +1,47 @@
+<div class="container mt-5">
+  <h1>Visualize everything you have to pay in one place</h1>
+
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Due Date</th>
+        <th>Total Amount</th>
+        <th>Interest Rate</th>
+        <th>Total Updated</th>
+        <th>Paid</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @debts.each do |debt| %>
+        <tr>
+          <td><%= debt.description %></td>
+          <td><%= debt.created_at.strftime("%d/%m/%Y") %></td>
+          <td>R$ <%= debt.total_amount %></td>
+          <td><%= debt.interest_rate %>%</td>
+          <td>
+            <input type="checkbox" data-controller="debt" data-action="change->debt#togglePaid"
+                   data-debt-id="<%= debt.id %>" <%= "checked" if debt.paid %>>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h4>Add item to pay</h4>
+  <%= form_with model: @debt, url: debts_path, local: true do |f| %>
+    <div class="mb-3">
+      <%= f.label :description, "Description" %>
+      <%= f.text_field :description, class: "form-control" %>
+    </div>
+    <div class="mb-3">
+      <%= f.label :total_amount, "R$" %>
+      <%= f.number_field :total_amount, class: "form-control" %>
+    </div>
+    <div class="mb-3">
+      <%= f.label :interest_rate, "Rate (%)" %>
+      <%= f.number_field :interest_rate, class: "form-control" %>
+    </div>
+    <%= f.submit "Adicionar", class: "btn btn-primary" %>
+  <% end %>
+</div>
