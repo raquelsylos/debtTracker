@@ -2,8 +2,8 @@ class Debt < ApplicationRecord
   belongs_to :user
 
   validates :description, presence: true
-  validates :total_amount, numericality: { greater_than_or_equal_to: 0 }
-  validates :interest_rate, numericality: { greater_than_or_equal_to: 0 }
+  validates :total_amount, numericality: { greater_than_or_equal_to: 0 }, format: { with: /\A\d+(?:\.\d{1,2})?\z/ }
+  validates :interest_rate, numericality: { greater_than_or_equal_to: 0 }, format: { with: /\A\d+(?:\.\d{1,2})?\z/ }
   validates :due_date, presence: true
 
    # Método para calcular o total atualizado com base nos dias de atraso

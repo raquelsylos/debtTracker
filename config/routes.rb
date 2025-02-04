@@ -1,12 +1,17 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  root "debts#index"
-  # routes for debts controller
-  resources :debts, only: [:index, :new, :create, :update, :destroy]
-  
-  # health check route
-  get "up" => "rails/health#show", as: :rails_health_check
+  get 'home/index'
+  devise_for :users
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Define a root para usuários autenticados
+  authenticated :user do
+    root 'debts#index', as: :authenticated_root
+  end
+
+  # Define uma página inicial para usuários não autenticados
+  unauthenticated do
+    root 'home#index', as: :unauthenticated_root
+  end
+
+  # Rotas para dívidas
+  resources :debts, only: [:index, :new, :create, :update, :destroy]
 end

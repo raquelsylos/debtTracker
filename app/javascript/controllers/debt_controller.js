@@ -3,22 +3,28 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   togglePaid(event) {
-    const debtId = event.target.dataset.debtId
-    const checked = event.target.checked
+    const checkbox = event.target
+    const debtId = checkbox.dataset.debtId
+    const checked = checkbox.checked
 
     fetch(`/debts/${debtId}`, {
       method: 'PATCH',
       headers: {
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
         'X-CSRF-Token': document.querySelector("[name='csrf-token']").content
       },
-      body: JSON.stringify({ paid: checked })
+      body: JSON.stringify({ paid: checked }),
+      credentials: 'same-origin'
     })
     .then(response => {
       if (!response.ok) {
-        event.target.checked = !checked
-        alert('Erro ao atualizar status')
+        throw new Error('Falha ao atualizar status')
       }
+    })
+    .catch(error => {
+      checkbox.checked = !checked
+      console.error('Erro:', error)
     })
   }
 
