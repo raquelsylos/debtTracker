@@ -1,2 +1,19 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+@import 'bootstrap-icons/font/bootstrap-icons';
+
+.table-responsive {
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+  }
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.form-check {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}

@@ -1,5 +1,5 @@
 class DebtsController < ApplicationController
-  before_action :set_debt, only: [:update]
+  before_action :set_debt, only: [:update, :destroy]
 
   def index
     @debts = Debt.all
@@ -22,6 +22,18 @@ class DebtsController < ApplicationController
       redirect_to debts_path, notice: "status atualizado!"
     else
       render :index, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    respond_to do |format|
+      if @debt.destroy
+        format.html { redirect_to debts_path, notice: 'Item excluído com sucesso!' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to debts_path, alert: 'Erro ao excluir item.' }
+        format.json { render json: @debt.errors, status: :unprocessable_entity }
+      end
     end
   end
 

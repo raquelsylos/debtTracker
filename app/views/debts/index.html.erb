@@ -1,56 +1,82 @@
 <div class="container mt-5">
-  <h1>Visualize everything you have to pay in one place</h1>
+  <h1 class="mb-4">Visualize everything you have to pay in one place</h1>
 
-  <table class="table table-bordered mt-3">
-    <thead>
-      <tr>
-        <th>Description</th>
-        <th>Due Date</th>
-        <th>Total Amount</th>
-        <th>Interest Rate</th>
-        <th>Total Updated</th>
-        <th>Paid</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @debts.each do |debt| %>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
         <tr>
-          <td><%= debt.description %></td>
-          <td><%= debt.due_date.present? ? debt.due_date.strftime("%d/%m/%Y") : "N/A" %></td>
-          <td>R$ <%= number_to_currency(debt.total_amount) %></td>
-          <td><%= debt.interest_rate %>%</td>
-          <td>R$ <%= number_to_currency(debt.total_updated) %></td>
-          <td>
-            <input type="checkbox" data-controller="debt" data-action="change->debt#togglePaid"
-                   data-debt-id="<%= debt.id %>" <%= "checked" if debt.paid %>>
-          </td>
+          <th>Description</th>
+          <th>Due Date</th>
+          <th>Total Amount</th>
+          <th>Interest Rate</th>
+          <th>Total Updated</th>
+          <th>Paid</th>
+          <th>Actions</th>
         </tr>
+      </thead>
+      <tbody>
+        <% @debts.each do |debt| %>
+          <tr class="<%= 'table-danger' if !debt.paid && debt.due_date.present? && debt.due_date < Date.today %>">
+            <td><%= debt.description %></td>
+            <td><%= debt.due_date.present? ? debt.due_date.strftime("%d/%m/%Y") : "N/A" %></td>
+            <td>R$ <%= number_to_currency(debt.total_amount) %></td>
+            <td><%= number_to_percentage(debt.interest_rate, precision: 2) %></td>
+            <td>R$ <%= number_to_currency(debt.total_updated) %></td>
+            <td>
+              <div class="form-check">
+                <input type="checkbox"
+                       class="form-check-input"
+                       data-controller="debt"
+                       data-action="change->debt#togglePaid"
+                       data-debt-id="<%= debt.id %>"
+                       <%= "checked" if debt.paid %>>
+              </div>
+            </td>
+            <td>
+              <button class="btn btn-danger btn-sm"
+                      data-controller="debt"
+                      data-debt-target="deleteButton"
+                      data-action="debt#delete"
+                      data-debt-id="<%= debt.id %>">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card mt-4">
+    <div class="card-header">
+      <h4 class="mb-0">Add new item</h4>
+    </div>
+    <div class="card-body">
+      <%= form_with model: @debt, url: debts_path, local: true, class: 'row g-3' do |f| %>
+        <div class="col-md-6">
+          <%= f.label :description, class: 'form-label' %>
+          <%= f.text_field :description, class: 'form-control', required: true %>
+        </div>
+
+        <div class="col-md-6">
+          <%= f.label :due_date, class: 'form-label' %>
+          <%= f.date_field :due_date, class: 'form-control', required: true %>
+        </div>
+
+        <div class="col-md-6">
+          <%= f.label :total_amount, "Total Amount (R$)", class: 'form-label' %>
+          <%= f.number_field :total_amount, class: 'form-control', step: '0.01', required: true %>
+        </div>
+
+        <div class="col-md-6">
+          <%= f.label :interest_rate, "Interest Rate (%)", class: 'form-label' %>
+          <%= f.number_field :interest_rate, class: 'form-control', step: '0.01', required: true %>
+        </div>
+
+        <div class="col-12">
+          <%= f.submit "Add Item", class: 'btn btn-primary' %>
+        </div>
       <% end %>
-    </tbody>
-  </table>
-
-  <h4>Add item to pay</h4>
-  <%= form_with model: @debt, url: debts_path, local: true do |f| %>
-    <div class="mb-3">
-      <%= f.label :description, "Description" %>
-      <%= f.text_field :description, class: "form-control", required: true %>
     </div>
-
-    <div class="mb-3">
-      <%= f.label :due_date, "Due Date" %>
-      <%= f.date_field :due_date, class: "form-control", required: true %>
-    </div>
-
-    <div class="mb-3">
-      <%= f.label :total_amount, "Total Amount (R$)" %>
-      <%= f.number_field :total_amount, class: "form-control", step: "0.01", required: true %>
-    </div>
-
-    <div class="mb-3">
-      <%= f.label :interest_rate, "Interest Rate (%)" %>
-      <%= f.number_field :interest_rate, class: "form-control", step: "0.01", required: true %>
-    </div>
-
-    <%= f.submit "Adicionar", class: "btn btn-primary" %>
-  <% end %>
+  </div>
 </div>

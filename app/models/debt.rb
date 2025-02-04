@@ -4,6 +4,7 @@ class Debt < ApplicationRecord
   validates :description, presence: true
   validates :total_amount, numericality: { greater_than_or_equal_to: 0 }
   validates :interest_rate, numericality: { greater_than_or_equal_to: 0 }
+  validates :due_date, presence: true
 
    # Método para calcular o total atualizado com base nos dias de atraso
    def update_total_amount
