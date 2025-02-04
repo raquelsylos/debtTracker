@@ -16,9 +16,10 @@
       <% @debts.each do |debt| %>
         <tr>
           <td><%= debt.description %></td>
-          <td><%= debt.created_at.strftime("%d/%m/%Y") %></td>
-          <td>R$ <%= debt.total_amount %></td>
+          <td><%= debt.due_date.present? ? debt.due_date.strftime("%d/%m/%Y") : "N/A" %></td>
+          <td>R$ <%= number_to_currency(debt.total_amount) %></td>
           <td><%= debt.interest_rate %>%</td>
+          <td>R$ <%= number_to_currency(debt.total_updated) %></td>
           <td>
             <input type="checkbox" data-controller="debt" data-action="change->debt#togglePaid"
                    data-debt-id="<%= debt.id %>" <%= "checked" if debt.paid %>>
@@ -32,16 +33,24 @@
   <%= form_with model: @debt, url: debts_path, local: true do |f| %>
     <div class="mb-3">
       <%= f.label :description, "Description" %>
-      <%= f.text_field :description, class: "form-control" %>
+      <%= f.text_field :description, class: "form-control", required: true %>
     </div>
+
     <div class="mb-3">
-      <%= f.label :total_amount, "R$" %>
-      <%= f.number_field :total_amount, class: "form-control" %>
+      <%= f.label :due_date, "Due Date" %>
+      <%= f.date_field :due_date, class: "form-control", required: true %>
     </div>
+
     <div class="mb-3">
-      <%= f.label :interest_rate, "Rate (%)" %>
-      <%= f.number_field :interest_rate, class: "form-control" %>
+      <%= f.label :total_amount, "Total Amount (R$)" %>
+      <%= f.number_field :total_amount, class: "form-control", step: "0.01", required: true %>
     </div>
+
+    <div class="mb-3">
+      <%= f.label :interest_rate, "Interest Rate (%)" %>
+      <%= f.number_field :interest_rate, class: "form-control", step: "0.01", required: true %>
+    </div>
+
     <%= f.submit "Adicionar", class: "btn btn-primary" %>
   <% end %>
 </div>
