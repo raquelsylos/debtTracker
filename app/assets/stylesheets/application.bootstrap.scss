@@ -3,9 +3,9 @@
 @import 'bootstrap-icons/font/bootstrap-icons';
 
 // Then your custom variables
-$primary: #ff5733;
-$secondary: #6c757d;
-$success: #28a745;
+$primary: #66B3A1;
+$secondary: #355e54;
+$success: #007932;
 
 // Then your custom styles
 body {
@@ -20,6 +20,15 @@ main {
 
 .navbar {
   background-color: #1a1a1a !important;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  color: white;
+
 }
 
 .hero-section {
