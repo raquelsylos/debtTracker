@@ -83,20 +83,20 @@ export default class extends Controller {
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Falha ao atualizar status')
+        throw new Error('Failed to update item')
       }
     })
     .catch(error => {
       checkbox.checked = !checked
-      console.error('Erro:', error)
-      this.showMessage('Erro ao atualizar status. Por favor, tente novamente.', 'danger')
+      console.error('Error:', error)
+      this.showMessage('Error. Please try again.', 'danger')
     })
   }
 
   delete(event) {
     event.preventDefault()
 
-    if (confirm('Tem certeza que deseja excluir este item?')) {
+    if (confirm('Are you sure you want to delete this item?')) {
       const button = event.currentTarget
       const debtId = button.dataset.debtId
 
@@ -114,14 +114,14 @@ export default class extends Controller {
           const row = button.closest('tr')
           row.remove()
           this.updateTotals() // Atualiza os totais após deletar
-          this.showMessage('Item excluído com sucesso!')
+          // this.showMessage('Item excluído com sucesso!')
         } else {
-          throw new Error('Falha ao excluir')
+          throw new Error('Failed to delete item')
         }
       })
       .catch(error => {
-        console.error('Erro:', error)
-        this.showMessage('Erro ao excluir item. Por favor, tente novamente.', 'danger')
+        console.error('Error:', error)
+        this.showMessage('Error. Please try again.', 'danger')
       })
     }
   }

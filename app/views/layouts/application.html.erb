@@ -31,10 +31,10 @@
           <ul class="navbar-nav ms-auto">
             <% if user_signed_in? %>
               <li class="nav-item">
-                <span class="nav-link">Olá, <%= current_user.name %>!</span>
+                <span class="nav-link">Hello, <%= current_user.name %>!</span>
               </li>
               <li class="nav-item">
-                <%= link_to "Edit Profile", edit_user_registration_path, class: "nav-link" %>
+                <%= link_to "Update Profile", edit_user_registration_path, class: "nav-link" %>
               </li>
               <li class="nav-item">
                 <%= form_tag(destroy_user_session_path, method: :delete) do %>

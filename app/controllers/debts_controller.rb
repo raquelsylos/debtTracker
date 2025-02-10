@@ -11,7 +11,7 @@ class DebtsController < ApplicationController
     @debt = current_user.debts.build(debt_params)
 
     if @debt.save
-      redirect_to debts_path, notice: "Item adicionado com sucesso!"
+      redirect_to debts_path, notice: "Item sucessfully added!"
     else
       render :index, status: :unprocessable_entity
     end
@@ -20,10 +20,10 @@ class DebtsController < ApplicationController
   def update
     respond_to do |format|
       if @debt.update(paid: params[:paid])
-        format.html { redirect_to debts_path, notice: 'Status atualizado!' }
+        format.html { redirect_to debts_path, notice: 'Status updated!' }
         format.json { head :no_content }
       else
-        format.html { redirect_to debts_path, alert: 'Erro ao atualizar status.' }
+        format.html { redirect_to debts_path, alert: 'Error updating status.' }
         format.json { render json: @debt.errors, status: :unprocessable_entity }
       end
     end
@@ -32,10 +32,11 @@ class DebtsController < ApplicationController
   def destroy
     respond_to do |format|
       if @debt.destroy
-        format.html { redirect_to debts_path, notice: 'Item excluído com sucesso!' }
+        format.html { redirect_to debts_path, notice: 'Item deleted successfully
+        ' }
         format.json { head :no_content }
       else
-        format.html { redirect_to debts_path, alert: 'Erro ao excluir item.' }
+        format.html { redirect_to debts_path, alert: 'Error excluding item.' }
         format.json { render json: @debt.errors, status: :unprocessable_entity }
       end
     end
