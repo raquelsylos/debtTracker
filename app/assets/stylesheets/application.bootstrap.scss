@@ -1,6 +1,7 @@
 // First import Bootstrap
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+@import "signup";
 
 // Then your custom variables
 $primary: #66B3A1;
@@ -32,48 +33,59 @@ main {
 }
 
 .hero-section {
-  background-color: #0061ff;
-  background-image: linear-gradient(45deg, #0061ff 0%, #60efff 100%);
-  margin-top: -1px;
+  background-color: white !important;
+  background-image: none !important;
+  padding: 80px 0;
 }
 
 .hero-banner {
-  padding: 100px 0;
-  color: white;
-  text-align: center;
-}
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px; // Espaçamento entre a imagem e o texto
 
-.banner-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  .hero-image {
+    flex: 1;
+    max-width: 40%; // Ajusta a largura da imagem
+    img {
+      max-width: 100%;
+      height: auto;
+    }
   }
 
-  .lead {
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-  }
+  .banner-content {
+    flex: 1;
+    text-align: left; // Alinha o texto à esquerda para melhor leitura
+    max-width: 50%;
 
-  .btn-lg {
-    padding: 15px 40px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #333; // Cor escura para melhor contraste com o fundo branco
+    }
 
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    .btn-lg {
+      padding: 15px 40px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background-color: #333; // Botão escuro para contrastar com o fundo branco
+      color: white;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
     }
   }
 }
+
+.hero-section {
+  background: white !important;
+}
+
 
 @media (max-width: 768px) {
   .hero-banner {

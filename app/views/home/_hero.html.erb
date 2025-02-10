@@ -1,11 +1,11 @@
 <div class="hero-section">
-      <div class="hero-banner">
-        <div class="container">
-          <div class="banner-content text-center">
-            <h1>Organize and visualize your bills in one place</h1>
-            <p class="lead mb-4">Take control of your finances today</p>
-            <%= link_to "GET STARTED", new_user_registration_path, class: "btn btn-light btn-lg" %>
-          </div>
-        </div>
-      </div>
+  <div class="hero-banner container d-flex align-items-center">
+    <div class="hero-image">
+      <%= image_tag "dt_banner.jpg", alt: "Visual Representation", class: "img-fluid" %>
     </div>
+    <div class="banner-content text-center">
+      <h1>Organize and visualize your bills in one place</h1>
+      <%= link_to "GET STARTED", new_user_registration_path, class: "btn btn-dark btn-lg" %>
+    </div>
+  </div>
+</div>

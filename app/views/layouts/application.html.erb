@@ -51,11 +51,11 @@
       </div>
     </nav>
 
-    <% unless (controller_name == "sessions" && action_name == "new") ||
-          (controller_name == "registrations" && action_name == "new") ||
+   <% unless (controller_name == "sessions" && action_name == "new") ||
+          (controller_name == "registrations" && action_name.in?(["new", "edit"])) ||
           (controller_name == "debts" && action_name == "index") %>
-      <%= render "home/hero" %>
-    <% end %>
+  <%= render "home/hero" %>
+<% end %>
 
     <main class="container my-4">
       <div id="flash-messages" class="mb-4">
