@@ -7,5 +7,4 @@ Rails.application.config.assets.paths << Rails.root.join("node_modules/bootstrap
 Rails.application.config.assets.paths << Rails.root.join("node_modules/bootstrap-icons/font")
 
 # Precompile additional assets
-Rails.application.config.assets.precompile += %w( bootstrap.min.js application.scss )
-Rails.application.config.assets.precompile << "bootstrap.min.js"
+Rails.application.config.assets.precompile += %w( bootstrap.min.js application.bootstrap.scss )

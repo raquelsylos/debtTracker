@@ -83,7 +83,7 @@ export default class extends Controller {
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Failed to update item')
+        throw new Error('Falha ao atualizar')
       }
     })
     .catch(error => {
@@ -96,7 +96,7 @@ export default class extends Controller {
   delete(event) {
     event.preventDefault()
 
-    if (confirm('Are you sure you want to delete this item?')) {
+    if (confirm('Tem certeza que quer excluir este item?')) {
       const button = event.currentTarget
       const debtId = button.dataset.debtId
 
@@ -116,12 +116,12 @@ export default class extends Controller {
           this.updateTotals() // Atualiza os totais após deletar
           // this.showMessage('Item excluído com sucesso!')
         } else {
-          throw new Error('Failed to delete item')
+          throw new Error('Falha ao excluir item')
         }
       })
       .catch(error => {
-        console.error('Error:', error)
-        this.showMessage('Error. Please try again.', 'danger')
+        console.error('Erro:', error)
+        this.showMessage('Erro. Por favor, tente novamente.', 'danger')
       })
     }
   }

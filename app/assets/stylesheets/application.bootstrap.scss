@@ -1,15 +1,20 @@
-// variaveis
+// variaveis de cor
 $primary: #66B3A1;
 $secondary: #355e54;
 $success: #007932;
 $info: #56E7A5;
 $background: #1B2E35;
+$bodyColor: #ffffff;
+
+// variaveis de fonte
+$font-family-base: 'Montserrat', sans-serif;
+$headings-font-family: 'Tomorrow', sans-serif;
 
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
 
-// custom styles
 body {
+  font-family: $font-family-base;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -17,10 +22,10 @@ body {
 
 main {
   flex: 1 0 auto;
+  margin-bottom: 10px;
 }
 
 // navbar
-
 .navbar {
   background-color: $background !important;
 }
@@ -30,12 +35,12 @@ main {
   font-weight: bold;
   display: flex;
   align-items: center;
-  color: white;
+  color: $bodyColor;
 }
 
 // banner
 .hero-section {
-  background-color: white !important;
+  background-color: $bodyColor !important;
   background-image: none !important;
   padding: 80px 0;
 }
@@ -44,11 +49,11 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 30px; // Espaçamento entre a imagem e o texto
+  gap: 30px;
 
   .hero-image {
     flex: 1;
-    max-width: 40%; // Ajusta a largura da imagem
+    max-width: 50%;
     img {
       max-width: 100%;
       height: auto;
@@ -57,14 +62,15 @@ main {
 
   .banner-content {
     flex: 1;
-    text-align: left; // Alinha o texto à esquerda para melhor leitura
+    text-align: left;
     max-width: 50%;
 
     h1 {
+      font-family: $headings-font-family;
       font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 1.5rem;
-      color: #333; // Cor escura para melhor contraste com o fundo branco
+      color: $background;
     }
 
     .btn-lg {
@@ -72,34 +78,34 @@ main {
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 1px;
-      background-color: #333; // Botão escuro para contrastar com o fundo branco
-      color: white;
+      background-color: $background;
+      color: $bodyColor;
+      border: 2px solid $background;
       transition: all 0.3s ease;
 
       &:hover {
+        background-color: $primary;
+        border-color: $info;
+        color: $bodyColor;
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 15px rgba(0, 121, 50, 0.3);
       }
     }
   }
 }
 
-.hero-section {
-  background: white !important;
-}
-
-// signup form
+// form de cadastro
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-color: #f8f9fa;
-  padding: 20px;
+  height: 100vh;
+  background-color: $bodyColor;
+  padding-top: 20px;
 }
 
 .auth-card {
-  background: white;
+  background: $bodyColor;
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -109,10 +115,11 @@ main {
 }
 
 .auth-title {
+  font-family: $headings-font-family;
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #333;
+  color: $background;
 }
 
 .auth-form {
@@ -134,7 +141,7 @@ main {
 
 .form-control {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 2px solid darken($bodyColor, 30%);
   border-radius: 5px;
   font-size: 16px;
 }
@@ -143,28 +150,133 @@ main {
   margin-top: 20px;
 }
 
-.btn-block {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 5px;
-}
-
 .auth-links {
   margin-top: 15px;
   font-size: 14px;
 }
 
+td .form-check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-custom {
+  padding: 10px 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background-color: $background !important;
+  color: $bodyColor !important;
+  border: 2px solid $background;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: darken($background, 10%) !important;
+    color: lighten($bodyColor, 10%) !important;
+    border-color: $info;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 121, 50, 0.3);
+  }
+}
+
+// Media Queries
 @media (max-width: 768px) {
   .hero-banner {
     padding: 60px 0;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 
-    h1 {
-      font-size: 2rem;
+    .hero-image {
+      max-width: 80%;
+    }
+
+    .banner-content {
+      max-width: 90%;
+
+      h1 {
+        font-size: 1.8rem;
+      }
     }
 
     .lead {
       font-size: 1.1rem;
     }
+  }
+
+  .table-responsive {
+    .table {
+      min-width: 800px;
+    }
+
+    td, th {
+      min-width: 100px;
+      white-space: nowrap;
+      padding: 10px;
+    }
+
+    td:first-child, th:first-child {
+      min-width: 150px;
+    }
+
+    td:last-child, th:last-child,
+    td:nth-last-child(2), th:nth-last-child(2) {
+      min-width: 80px;
+    }
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 0 10px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .auth-card {
+    padding: 20px;
+    width: 90%;
+  }
+
+  .form-control {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    display: block;
+  }
+
+  .table th,
+  .table td {
+    white-space: nowrap;
+    font-size: 12px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .banner-content h1 {
+    font-size: 1.5rem;
+    line-height: 1.2;
   }
 }

@@ -1,12 +1,12 @@
 <div class="auth-container">
   <div class="auth-card">
-    <h2 class="auth-title">Create Your Account</h2>
+    <h2 class="auth-title">Cadastre-se</h2>
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "auth-form" }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
       <div class="form-group">
-        <%= f.label :name, class: "form-label" %>
+        <%= f.label :nome, class: "form-label" %>
         <%= f.text_field :name, class: "form-control", autofocus: true %>
       </div>
 
@@ -16,20 +16,20 @@
       </div>
 
       <div class="form-group">
-        <%= f.label :password, class: "form-label" %>
+        <%= f.label :senha, class: "form-label" %>
         <% if @minimum_password_length %>
-          <em>(<%= @minimum_password_length %> characters minimum)</em>
+          <em>(mínimo de <%= @minimum_password_length %> caracteres)</em>
         <% end %>
         <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
       </div>
 
       <div class="form-group">
-        <%= f.label :password_confirmation, class: "form-label" %>
+        <%= f.label :confirmar_senha, class: "form-label" %>
         <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
       </div>
 
       <div class="form-actions">
-        <%= f.submit "Sign Up", class: "btn btn-primary btn-block" %>
+        <%= f.submit "Cadastrar", class: "btn btn-custom" %>
       </div>
     <% end %>
 

@@ -13,7 +13,7 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.label :password %> <br />
     <%= f.password_field :password, autocomplete: "new-password" %>
     <% if @minimum_password_length %>
       <br />
@@ -27,7 +27,7 @@
   </div>
 
   <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+    <%= f.label :current_password %> <i>(insira sua senha atual para confirmar alterações)</i><br />
     <%= f.password_field :current_password, autocomplete: "current-password" %>
   </div>
 
@@ -38,12 +38,11 @@
 
 <% if user_signed_in? %>
   <p class="text-center mt-3">
-    Already have an account? <%= link_to "Edit your profile", edit_user_registration_path %>
-  </p>
+    Já tem uma conta? <%= link_to "Editar", edit_user_registration_path %> </p>
 <% end %>
 
-<h3>Cancel my account</h3>
+<h3>Cancelar minha conta</h3>
 
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
+<div>Insatisfeito(a)? <%= button_to "Cancelar minha conta", registration_path(resource_name), data: { confirm: "Tem certeza desta ação?", turbo_confirm: "Tem certeza?" }, method: :delete %></div>
 
-<%= link_to "Back", :back %>
+<%= link_to "Voltar", :back %>
