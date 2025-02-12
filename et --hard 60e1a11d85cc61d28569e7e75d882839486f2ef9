@@ -1,0 +1,131 @@
+[33mcommit 3385af33fedac065aa1b701ce9e50d3430a903a9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Wed Feb 12 12:37:22 2025 -0300
+
+    Adding tzinfo-data for compatibility with Linux
+
+[33mcommit 5b872ae66bbfb6870c88d03e29d4f01f93d93997[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Wed Feb 12 12:35:21 2025 -0300
+
+    Removing sassc-rails to avoid conflicts
+
+[33mcommit e7eba3cf3b49aa704bbd7e2dc4e7f96c0019bfc0[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Wed Feb 12 12:34:13 2025 -0300
+
+    rem gemfile.lock
+
+[33mcommit 60e1a11d85cc61d28569e7e75d882839486f2ef9[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Wed Feb 12 11:10:28 2025 -0300
+
+    rm and add new credentials
+
+[33mcommit ffc3878cffcec1bdad53a3b4c4e5ed33da714ad7[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Tue Feb 11 17:26:22 2025 -0300
+
+    updating environment.rb
+
+[33mcommit 34ea883facf9839b15e7bf03a2125be8cc08840d[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Tue Feb 11 16:59:14 2025 -0300
+
+    updating config/database.yml for deploy
+
+[33mcommit 0f972a41768af8e1a574339ac9dad057ca2f858c[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Tue Feb 11 15:51:24 2025 -0300
+
+    allowing assets compilation on production environment
+
+[33mcommit 5d2ca73939df22f2d2072702c3921ce3e016a2c6[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Tue Feb 11 15:28:21 2025 -0300
+
+    Atualizando para deploy
+
+[33mcommit 2771cbd32300f9221d2afdae04b399f2078214ff[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Tue Feb 11 14:24:35 2025 -0300
+
+    final adjusts on project forms
+
+[33mcommit dd68b16275286fedbe28d9752ec7c450b90296b2[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Mon Feb 10 13:22:47 2025 -0300
+
+    updating home
+
+[33mcommit 61830ee959ab2257e1e2a50ee484de6e896e0b82[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Mon Feb 10 12:19:00 2025 -0300
+
+    customized login-signup-edit forms
+
+[33mcommit 1139112c90ee04a5f0c929b12955fe6a90cd1ab2[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Sun Feb 9 11:23:07 2025 -0300
+
+    users/edit fixed and added total line to debts
+
+[33mcommit 27f3e94d8ed2ca2daf44079d5a03dee92a175c1f[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Fri Feb 7 12:25:30 2025 -0300
+
+    logo fixed
+
+[33mcommit 648988adfd4128501086ef21f5ca672cd17132b1[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Fri Feb 7 09:46:57 2025 -0300
+
+    change logo
+
+[33mcommit 0a28b5d2f18b9a802d2eb183c0d709e4d6f645f0[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Thu Feb 6 15:54:51 2025 -0300
+
+    fix logout path --ignoring turbo
+
+[33mcommit f6e6bcb95d894f75a522999e6e7763beddb0f881[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Wed Feb 5 18:45:18 2025 -0300
+
+    fix nabvar and path to login
+
+[33mcommit 68c7e143b76adf165efbdc26a8a45ff182efebbf[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Wed Feb 5 11:32:21 2025 -0300
+
+    login and logout implemented on navbar
+
+[33mcommit 6fda7b46d535aeddfbb2d2b40d5c6f6ad164b76f[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Tue Feb 4 12:12:26 2025 -0300
+
+    home controller test
+
+[33mcommit 4a4ed5a5f7d741e3abce3e0de1b67101ab0a9a6a[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Tue Feb 4 09:57:16 2025 -0300
+
+    insert destroy method on debts controller
+
+[33mcommit 683b5e46a7a2d34ba72b14a6d4c6fac08ef4fad2[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Mon Feb 3 22:02:29 2025 -0300
+
+    fix debt table on view
+
+[33mcommit 90dae5fe064b603a269646f13519a95e55752c84[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Mon Feb 3 19:25:45 2025 -0300
+
+    create debts view
+
+[33mcommit c49af5cc8b727be08e9e10fb5715981f78626130[m
+Author: Raquel Sylos <raquelsylos@gmail.com>
+Date:   Mon Feb 3 17:08:23 2025 -0300
+
+    create user and debt model
