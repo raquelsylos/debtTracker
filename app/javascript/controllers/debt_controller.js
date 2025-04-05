@@ -1,128 +1,132 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["deleteButton"]
+  static targets = ["deleteButton"];
 
   connect() {
-    console.log("Debt controller connected")
-    this.setupAlertListeners()
+    console.log("Debt controller connected");
   }
 
-  setupAlertListeners() {
-    document.addEventListener('click', (e) => {
-      if (e.target.classList.contains('btn-close')) {
-        const alert = e.target.closest('.alert')
-        if (alert) {
-          alert.remove()
-        }
-      }
-    })
+  addDebt(event) {
+    const [data, status, xhr] = event.detail;
+
+    // Adicionar a nova dívida à tabela de "Despesas Pendentes"
+    const unpaidTableBody = document.querySelector("#unpaid-debts tbody");
+    const newRow = document.createElement("tr");
+    newRow.setAttribute("data-debt-id", data.id);
+
+    newRow.innerHTML = `
+      <td data-label="Descrição">${data.description}</td>
+      <td data-label="Vencimento">${data.due_date || "N/A"}</td>
+      <td data-label="Total">R$ ${data.total_amount.toFixed(2)}</td>
+      <td data-label="Encargos">${data.interest_rate.toFixed(2)}%</td>
+      <td data-label="Total Atualizado">R$ ${data.total_updated.toFixed(2)}</td>
+      <td data-label="Pago">
+        <div class="form-check">
+          <input type="checkbox"
+                 class="form-check-input"
+                 data-controller="debt"
+                 data-action="change->debt#togglePaid"
+                 data-debt-id="${data.id}">
+        </div>
+      </td>
+      <td data-label="Ações">
+        <button class="btn btn-danger btn-sm" data-debt-id="${data.id}" data-action="debt#delete">
+          <i class="bi bi-trash"></i>
+        </button>
+      </td>
+    `;
+
+    unpaidTableBody.appendChild(newRow);
+
+    // Atualizar os totais
+    this.updateTotals();
+
+    // Limpar o formulário
+    event.target.reset();
   }
 
-  updateTotals() {
-    const rows = document.querySelectorAll('tr:not(.table-dark)')
-    let totalAmount = 0
-    let totalUpdated = 0
-
-    rows.forEach(row => {
-      const amountCell = row.cells[2]
-      const updatedCell = row.cells[4]
-
-      if (amountCell && updatedCell) {
-        // Remove "R$ " e converte para número
-        const amount = parseFloat(amountCell.textContent.replace('R$ ', '').replace(',', '.')) || 0
-        const updated = parseFloat(updatedCell.textContent.replace('R$ ', '').replace(',', '.')) || 0
-
-        totalAmount += amount
-        totalUpdated += updated
-      }
-    })
-
-    // Atualiza a linha de total
-    const totalRow = document.querySelector('tr.table-dark')
-    if (totalRow) {
-      totalRow.cells[2].textContent = `R$ ${totalAmount.toFixed(2)}`
-      totalRow.cells[4].textContent = `R$ ${totalUpdated.toFixed(2)}`
-    }
-  }
-
-  showMessage(message, type = 'success') {
-    const flashDiv = document.getElementById('flash-messages')
-    const alert = document.createElement('div')
-    alert.className = `alert alert-${type} alert-dismissible fade show`
-    alert.role = 'alert'
-
-    alert.innerHTML = `
-      ${message}
-      <button type="button" class="btn-close" aria-label="Close"></button>
-    `
-
-    flashDiv.appendChild(alert)
-
-    setTimeout(() => {
-      if (alert && alert.parentNode) {
-        alert.remove()
-      }
-    }, 5000)
+  handleError(event) {
+    const [data, status, xhr] = event.detail;
+    alert("Erro ao adicionar a dívida. Verifique os campos e tente novamente.");
   }
 
   togglePaid(event) {
-    const checkbox = event.target
-    const debtId = checkbox.dataset.debtId
-    const checked = checkbox.checked
+    const checkbox = event.target;
+    const debtId = checkbox.dataset.debtId;
+    const checked = checkbox.checked;
 
-    fetch(`/debts/${debtId}`, {
-      method: 'PATCH',
+    // Enviar requisição PATCH para atualizar o status de "pago"
+    fetch(`/debts/${debtId}/toggle_paid`, {
+      method: "PATCH",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector("[name='csrf-token']").content
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
       },
       body: JSON.stringify({ debt: { paid: checked } }),
-      credentials: 'same-origin'
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Falha ao atualizar')
-      }
-    })
-    .catch(error => {
-      checkbox.checked = !checked
-      console.error('Error:', error)
-      this.showMessage('Error. Please try again.', 'danger')
-    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erro ao atualizar o status da dívida.");
+        }
+        return response.json();
+      })
+      .then(() => {
+        // Mover a linha para a tabela correta
+        const row = checkbox.closest("tr");
+        const targetTable = checked
+          ? document.querySelector("#paid-debts tbody")
+          : document.querySelector("#unpaid-debts tbody");
+
+        targetTable.appendChild(row);
+
+        // Atualizar os totais
+        this.updateTotals();
+      })
+      .catch((error) => {
+        console.error(error);
+        checkbox.checked = !checked; // Reverter o estado do checkbox em caso de erro
+        alert("Erro ao atualizar o status. Tente novamente.");
+      });
   }
 
-  delete(event) {
-    event.preventDefault()
+  updateTotals() {
+    const unpaidRows = document.querySelectorAll("#unpaid-debts tbody tr");
+    const paidRows = document.querySelectorAll("#paid-debts tbody tr");
 
-    if (confirm('Tem certeza que quer excluir este item?')) {
-      const button = event.currentTarget
-      const debtId = button.dataset.debtId
+    let unpaidTotal = 0;
+    let paidTotal = 0;
 
-      fetch(`/debts/${debtId}`, {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': document.querySelector("[name='csrf-token']").content
-        },
-        credentials: 'same-origin'
-      })
-      .then(response => {
-        if (response.ok) {
-          const row = button.closest('tr')
-          row.remove()
-          this.updateTotals() // Atualiza os totais após deletar
-          // this.showMessage('Item excluído com sucesso!')
-        } else {
-          throw new Error('Falha ao excluir item')
-        }
-      })
-      .catch(error => {
-        console.error('Erro:', error)
-        this.showMessage('Erro. Por favor, tente novamente.', 'danger')
-      })
+    unpaidRows.forEach((row) => {
+      const updatedCell = row.querySelector('[data-label="Total Atualizado"]');
+      if (updatedCell) {
+        const updated = parseFloat(
+          updatedCell.textContent.replace("R$ ", "").replace(",", ".")
+        );
+        unpaidTotal += isNaN(updated) ? 0 : updated;
+      }
+    });
+
+    paidRows.forEach((row) => {
+      const updatedCell = row.querySelector('[data-label="Total Atualizado"]');
+      if (updatedCell) {
+        const updated = parseFloat(
+          updatedCell.textContent.replace("R$ ", "").replace(",", ".")
+        );
+        paidTotal += isNaN(updated) ? 0 : updated;
+      }
+    });
+
+    // Atualizar os totais no HTML
+    const unpaidTotalElement = document.querySelector("#unpaid-total");
+    const paidTotalElement = document.querySelector("#paid-total");
+
+    if (unpaidTotalElement) {
+      unpaidTotalElement.textContent = `R$ ${unpaidTotal.toFixed(2)}`;
+    }
+
+    if (paidTotalElement) {
+      paidTotalElement.textContent = `R$ ${paidTotal.toFixed(2)}`;
     }
   }
 }

@@ -1,8 +1,10 @@
 <div class="container mt-5 text-center">
   <h1 class="mb-4 text-secondary text-uppercase fw-semibold">Lista de despesas</h1>
 
-    <div class="table-responsive">
-    <table class="table table-bordered table-hover">
+  <div class="table-responsive">
+    <h2>Despesas Pendentes</h2>
+    <h4>Total Pendentes: <span id="unpaid-total">R$ <%= number_to_currency(@debts.reject(&:paid).sum(&:total_updated)) %></span></h4>
+    <table class="table table-bordered table-hover" id="unpaid-debts">
       <thead class="table-light">
         <tr>
           <th>Descrição</th>
@@ -15,8 +17,8 @@
         </tr>
       </thead>
       <tbody>
-        <% @debts.each do |debt| %>
-          <tr class="<%= 'table-danger' if !debt.paid && debt.due_date.present? && debt.due_date < Date.today %>">
+        <% @debts.reject(&:paid).each do |debt| %>
+          <tr data-debt-id="<%= debt.id %>">
             <td data-label="Descrição"><%= debt.description %></td>
             <td data-label="Vencimento"><%= debt.due_date.present? ? debt.due_date.strftime("%d/%m/%Y") : "N/A" %></td>
             <td data-label="Total">R$ <%= number_to_currency(debt.total_amount) %></td>
@@ -25,11 +27,11 @@
             <td data-label="Pago">
               <div class="form-check">
                 <input type="checkbox"
-                      class="form-check-input"
-                      data-controller="debt"
-                      data-action="change->debt#togglePaid"
-                      data-debt-id="<%= debt.id %>"
-                      <%= "checked" if debt.paid %>>
+                       class="form-check-input"
+                       data-controller="debt"
+                       data-action="change->debt#togglePaid"
+                       data-debt-id="<%= debt.id %>"
+                       <%= "checked" if debt.paid %>>
               </div>
             </td>
             <td data-label="Ações">
@@ -48,49 +50,68 @@
             </td>
           </tr>
         <% end %>
-
-        <tr class="table-dark fw-bold">
-          <td colspan="2" data-label="Tipo">Total</td>
-          <td data-label="Total">R$ <%= number_to_currency(@debts.sum(&:total_amount)) %></td>
-          <td data-label="Encargos">-</td>
-          <td data-label="Total Atualizado">R$ <%= number_to_currency(@debts.sum(&:total_updated)) %></td>
-          <td colspan="2" data-label="">-</td>
-        </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="card mt-4">
-    <div class="card-header">
-      <h4 class="mb-0">Novo pagamento</h4>
-    </div>
-    <div class="card-body">
-      <%= form_with model: @debt, url: debts_path, local: true, class: 'row g-3',
-              data: { controller: "debt", action: "turbo:submit-end->debt#updateTotals" } do |f| %>
-        <div class="col-md-6">
-          <%= f.label :descrição, class: 'form-label' %>
-          <%= f.text_field :description, class: 'form-control', required: true %>
-        </div>
-
-        <div class="col-md-6">
-          <%= f.label :vencimento, class: 'form-label' %>
-          <%= f.date_field :due_date, class: 'form-control', required: true %>
-        </div>
-
-        <div class="col-md-6">
-          <%= f.label :total, "Total (R$)", class: 'form-label' %>
-          <%= f.number_field :total_amount, class: 'form-control', step: '0.01', required: true %>
-        </div>
-
-        <div class="col-md-6">
-          <%= f.label :encargos, "Encargos por atraso (%)", class: 'form-label' %>
-          <%= f.number_field :interest_rate, class: 'form-control', step: '0.01', required: true %>
-        </div>
-
-        <div class="col-12">
-          <%= f.submit "Adicionar", class: 'btn btn-custom fw-semibold text-dark' %>
-        </div>
-      <% end %>
-    </div>
+  <div class="table-responsive mt-5">
+    <h2>Despesas Pagas</h2>
+    <h4>Total Pagas: <span id="paid-total">R$ <%= number_to_currency(@debts.select(&:paid).sum(&:total_updated)) %></span></h4>
+    <table class="table table-bordered table-hover" id="paid-debts">
+      <thead class="table-light">
+        <tr>
+          <th>Descrição</th>
+          <th>Vencimento</th>
+          <th>Total</th>
+          <th>Encargos (%)</th>
+          <th>Total Atualizado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @debts.select(&:paid).each do |debt| %>
+          <tr data-debt-id="<%= debt.id %>">
+            <td data-label="Descrição"><%= debt.description %></td>
+            <td data-label="Vencimento"><%= debt.due_date.present? ? debt.due_date.strftime("%d/%m/%Y") : "N/A" %></td>
+            <td data-label="Total">R$ <%= number_to_currency(debt.total_amount) %></td>
+            <td data-label="Encargos"><%= number_to_percentage(debt.interest_rate, precision: 2) %></td>
+            <td data-label="Total Atualizado">R$ <%= number_to_currency(debt.total_updated) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
+>
+  <div class="card mt-4">
+  <div class="card-header">
+    <h4 class="mb-0">Novo pagamento</h4>
+  </div>
+  <div class="card-body">
+    <%= form_with model: @debt, url: debts_path, local: false, class: 'row g-3',
+            data: { controller: "debt", action: "ajax:success->debt#addDebt ajax:error->debt#handleError" } do |f| %>
+      <div class="col-md-6">
+        <%= f.label :descrição, class: 'form-label' %>
+        <%= f.text_field :description, class: 'form-control', required: true %>
+      </div>
+
+      <div class="col-md-6">
+        <%= f.label :vencimento, class: 'form-label' %>
+        <%= f.date_field :due_date, class: 'form-control', required: true %>
+      </div>
+
+      <div class="col-md-6">
+        <%= f.label :total, "Total (R$)", class: 'form-label' %>
+        <%= f.number_field :total_amount, class: 'form-control', step: '0.01', required: true %>
+      </div>
+
+      <div class="col-md-6">
+        <%= f.label :encargos, "Encargos por atraso (%)", class: 'form-label' %>
+        <%= f.number_field :interest_rate, class: 'form-control', step: '0.01', required: true %>
+      </div>
+
+      <div class="col-12">
+        <%= f.submit "Adicionar", class: 'btn btn-custom fw-semibold text-dark' %>
+      </div>
+    <% end %>
+  </div>
+</div>
 </div>
